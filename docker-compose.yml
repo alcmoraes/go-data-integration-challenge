@@ -1,0 +1,18 @@
+version: '3'
+services:
+  go_dic_mongo:
+    image: mongo:3.4
+    container_name: go_dic_mongo
+    volumes:
+      - mongo_db:/data/db
+    ports:
+      - 27017:27017
+  go_dic:
+    container_name: go_dic
+    links:
+      - go_dic_mongo
+    build: .
+    ports:
+      - 8080:8080
+volumes:
+  mongo_db:
