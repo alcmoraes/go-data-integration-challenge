@@ -13,6 +13,7 @@ func Load() *gin.Engine {
 	{
 		companies.GET("/", api.GetCompany)
 		companies.POST("/", api.MergeCompany)
+		companies.POST("/upload", api.UploadCompany)
 	}
 
 	return router
