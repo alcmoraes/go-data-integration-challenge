@@ -1,5 +1,5 @@
 api_endpoint: http://localhost:8080/
-db_address: go_dic_mongo
+db_address: mongodb://go_dic_mongo:27017
 database: yawoen
 port: 8080
 host: localhost

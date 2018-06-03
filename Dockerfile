@@ -11,6 +11,8 @@ COPY . .
 
 RUN dep ensure
 
+RUN mkdir /app
+
 RUN go build -o /app/api
 
 CMD ["/app/api"]
