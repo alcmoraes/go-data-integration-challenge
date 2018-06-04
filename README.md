@@ -46,6 +46,7 @@ In the other hand, typing `make` show the available commands in your terminal
 
 ## API Documentation (Swagger)
 
-First ensure project is running. If not go and start it with `make start`.
-Execute `make docs`, this will start server on port `3005`.
+Ensure the project is running (`make start`).
+
+Execute `make docs`, this will start a swagger explorer on port `3005`.
 
