@@ -12,8 +12,6 @@ COPY . .
 RUN curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 RUN chmod +x ./cc-test-reporter
 
-RUN go get github.com/axw/gocov/gocov
-
 RUN dep ensure
 
 RUN mkdir /app
