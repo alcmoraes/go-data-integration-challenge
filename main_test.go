@@ -9,6 +9,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
+
 	session, db, err := database.GetDatabase()
 	defer session.Close()
 
