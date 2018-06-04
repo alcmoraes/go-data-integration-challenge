@@ -16,3 +16,4 @@ services:
       - 8080:8080
 volumes:
   mongo_db:
+    driver: local

@@ -67,7 +67,7 @@ func TestCompanyAPI(t *testing.T) {
 		company := types.Company{}
 		err = json.Unmarshal(w.Body.Bytes(), &company)
 		assert.NoError(t, err)
-		assert.Equal(t, company.Name, "tola sales group")
+		assert.Equal(t, "tola sales group", company.Name)
 		assert.Empty(t, company.Website)
 	})
 
@@ -101,7 +101,7 @@ func TestCompanyAPI(t *testing.T) {
 		company := types.Company{}
 		err = json.Unmarshal(w.Body.Bytes(), &company)
 		assert.NoError(t, err)
-		assert.Equal(t, company.Website, "http://repsources.com")
+		assert.Equal(t, "http://repsources.com", company.Website)
 	})
 
 }
