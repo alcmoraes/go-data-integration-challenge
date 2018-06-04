@@ -12,5 +12,5 @@ after_check:
 	- docker exec -it go_dic /bin/sh -c "CC_TEST_REPORTER_ID=$(CCT) ./cc-test-reporter after-build $(TRAVIS_TEST_RESULT)"
 
 setup:
-  - docker-compose down -v
+	- docker-compose down -v
 	- docker-compose build
