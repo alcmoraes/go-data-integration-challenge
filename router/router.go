@@ -12,8 +12,8 @@ func Load() *gin.Engine {
 	companies := ginRouter.Group("/companies")
 	{
 		companies.GET("/", api.GetCompany)
-		companies.POST("/", api.ImportCompany)
-		companies.POST("/upload", api.UploadCompany)
+		companies.POST("/", api.MergeCompany)
+		companies.POST("/upload", api.UploadCompanies)
 	}
 
 	return ginRouter

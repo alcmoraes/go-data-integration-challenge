@@ -15,4 +15,6 @@ RUN mkdir /app
 
 RUN go build -o /app/api
 
+COPY config.yml.dev config.yml
+
 CMD ["/app/api"]

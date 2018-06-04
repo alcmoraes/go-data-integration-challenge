@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"io"
 	"mime/multipart"
-	"net/http"
 	"os"
 )
 
@@ -16,7 +15,7 @@ func MustOpen(f string) *os.File {
 	return r
 }
 
-func Upload(url string, values map[string]io.Reader) (h *http.Request, mp *multipart.Writer, err error) {
+func GenerateMultipartHeadersFromLocal(values map[string]io.Reader) (bb *bytes.Buffer, mp *multipart.Writer, err error) {
 	var b bytes.Buffer
 	m := multipart.NewWriter(&b)
 	for key, r := range values {
@@ -26,11 +25,11 @@ func Upload(url string, values map[string]io.Reader) (h *http.Request, mp *multi
 		}
 		if x, ok := r.(*os.File); ok {
 			if fw, err = m.CreateFormFile(key, x.Name()); err != nil {
-				return
+				return nil, nil, err
 			}
 		} else {
 			if fw, err = m.CreateFormField(key); err != nil {
-				return
+				return nil, nil, err
 			}
 		}
 		if _, err = io.Copy(fw, r); err != nil {
@@ -38,9 +37,5 @@ func Upload(url string, values map[string]io.Reader) (h *http.Request, mp *multi
 		}
 	}
 	m.Close()
-	req, err := http.NewRequest("POST", url, &b)
-	if err != nil {
-		return nil, nil, err
-	}
-	return req, m, nil
+	return &b, m, nil
 }
