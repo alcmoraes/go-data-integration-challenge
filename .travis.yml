@@ -1,14 +1,13 @@
-language: node_js
-node_js: lts/carbon
+language: go
+go: 1.10.x
 services: docker
 before_install:
   - make setup
-  - npm i -g coveralls
 install:
   - make start
+before_script:
+  - make before_check
 script:
   - make check
 after_success:
-  - make lcov | tail -n +2 > coverage.lcov
-  - sed -i 's/\/github.com\/alcmoraes\/go-data-integration-challenge/\/home\/travis\/build\/alcmoraes\/go-data-integration-challenge/g' coverage.lcov
-  - cat coverage.lcov | coveralls
+  - make after_check
