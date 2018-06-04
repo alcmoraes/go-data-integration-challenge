@@ -1,10 +1,12 @@
 #Challenge Makefile
 
 start:
-#TODO: commands necessary to start the API
+	- docker-compose up -d
 
 check:
-#TODO: include command to test the code and show the results
+	- docker exec -it go_dic bash -c "mv config.yml config.yml.bck && mv config.yml.test config.yml"
+	- docker exec -it go_dic bash -c "go test -v ./..."
+	- docker exec -it go_dic bash -c "mv config.yml config.yml.test && mv config.yml.bck config.yml"
 
-#setup:
-#if needed to setup the enviroment before starting it
+setup:
+	- docker-compose build

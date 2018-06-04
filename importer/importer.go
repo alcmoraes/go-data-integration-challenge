@@ -39,7 +39,6 @@ func Worker(f multipart.File, h *multipart.FileHeader, persist bool, done chan b
 	for _, c := range companies {
 		company := *c
 		go database.AddCompanyIntoDatabase(company, persist)
-
 	}
 	done <- true
 	return nil
