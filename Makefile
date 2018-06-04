@@ -1,10 +1,31 @@
-#Challenge Makefile
+.PHONY: help
+.DEFAULT_GOAL := help
 
-start:
-#TODO: commands necessary to start the API
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-check:
-#TODO: include command to test the code and show the results
+start: ## Starts the containers and the API listening on port 8080
+	- docker-compose up -d
 
-#setup:
-#if needed to setup the enviroment before starting it
+stop: ## Stops the containers
+	- docker-compose stop
+
+before_check:
+	- docker exec -it go_dic /bin/sh -c "CC_TEST_REPORTER_ID=$(CCT) ./cc-test-reporter before-build"
+
+check: ## Run unit tests
+	- docker exec -it go_dic /bin/sh -c "go test -coverprofile c.out ./..."
+
+after_check:
+	- docker exec -it go_dic /bin/sh -c "CC_TEST_REPORTER_ID=$(CCT) ./cc-test-reporter after-build $(TRAVIS_TEST_RESULT)"
+
+docs: ## Serves a swagger server containing the specs for this api 
+	- docker exec -it go_dic /bin/sh -c "PORT=3002 swagger serve swagger.json"
+
+setup: remove ## Builds the containers
+	- docker-compose build
+
+remove: ## Removes containers and volumes created by docker
+	- docker-compose down -v
+
+

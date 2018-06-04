@@ -2,6 +2,7 @@ package types
 
 import "github.com/globalsign/mgo/bson"
 
+// Company defaul struct
 type Company struct {
 	ID      bson.ObjectId `bson:"_id,omitempty" json:"id" csv:"-"`
 	Name    string        `bson:"name,omitempty" form:"name" csv:"name" json:"name" binding:"required"`
@@ -9,6 +10,7 @@ type Company struct {
 	Website string        `bson:"website,omitempty" form:"website" csv:"website" json:"website"`
 }
 
+// CompanyUploadQuery schema for uploading CSV files
 type CompanyUploadQuery struct {
 	Persist bool `bson:"persist" form:"persist" json:"persist"`
 }

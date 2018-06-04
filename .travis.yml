@@ -1,0 +1,13 @@
+language: go
+go: 1.10.x
+services: docker
+before_install:
+  - make setup
+install:
+  - make start
+before_script:
+  - make before_check
+script:
+  - make check
+after_success:
+  - make after_check

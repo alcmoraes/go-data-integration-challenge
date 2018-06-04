@@ -13,7 +13,7 @@ import (
 )
 
 // Worker for the CSV file import data
-func Worker(f multipart.File, h *multipart.FileHeader, persist bool, done chan bool) error {
+func Worker(f multipart.File, persist bool, done chan bool) error {
 
 	gocsv.SetCSVReader(func(in io.Reader) gocsv.CSVReader {
 		r := csv.NewReader(in)
@@ -38,9 +38,9 @@ func Worker(f multipart.File, h *multipart.FileHeader, persist bool, done chan b
 
 	for _, c := range companies {
 		company := *c
-		go database.AddCompanyIntoDatabase(company, persist)
-
+		database.AddCompanyIntoDatabase(company, persist)
 	}
+
 	done <- true
 	return nil
 }
