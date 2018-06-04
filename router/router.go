@@ -7,14 +7,14 @@ import (
 
 // Load the gin HTTP
 func Load() *gin.Engine {
-	router := gin.Default()
+	ginRouter := gin.Default()
 
-	companies := router.Group("/companies")
+	companies := ginRouter.Group("/companies")
 	{
 		companies.GET("/", api.GetCompany)
 		companies.POST("/", api.MergeCompany)
-		companies.POST("/upload", api.UploadCompany)
+		companies.POST("/upload", api.UploadCompanies)
 	}
 
-	return router
+	return ginRouter
 }

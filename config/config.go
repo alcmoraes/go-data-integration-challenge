@@ -21,6 +21,7 @@ func init() {
 	v.SetConfigName("config")
 	v.SetConfigType("yaml")
 	v.AddConfigPath(".")
+	v.AddConfigPath("$PWD/..")
 	err := v.ReadInConfig()
 
 	if err != nil {
@@ -29,6 +30,7 @@ func init() {
 
 	Config = Configuration{}
 	err = v.Unmarshal(&Config)
+
 	if err != nil {
 		Config = Configuration{}
 	}

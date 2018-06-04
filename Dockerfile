@@ -9,10 +9,17 @@ WORKDIR /go/src/github.com/alcmoraes/go-data-integration-challenge
 
 COPY . .
 
+RUN curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+RUN chmod +x ./cc-test-reporter
+
+RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
+
 RUN dep ensure
 
 RUN mkdir /app
 
 RUN go build -o /app/api
+
+COPY config.yml.dev config.yml
 
 CMD ["/app/api"]
