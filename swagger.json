@@ -1,0 +1,198 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Data Integration Challenge",
+    "contact": {
+      "name": "Alexandre C. Moraes",
+      "email": "alcmoraes89@gmail.com",
+      "url": "https://www.linkedin.com/in/alexandre-moraes-9a279765/"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "http://localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/companies/upload": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Integrate data using a CSV file.\n\nIt's **mandatory** that the CSV uses the `;` delimiter and that its first row declares each column type:\n\n`name` For the company name;\n\n`zip` For the company zipcode;\n\n`website` For the company website;",
+        "operationId": "UploadCompanies",
+        "parameters": [{
+          "name": "file",
+          "in": "formData",
+          "description": "The CSV file",
+          "required": true,
+          "paramType": "file",
+          "type": "file"
+        }, {
+          "name": "persist",
+          "in": "formData",
+          "description": "If `true` it will create companies when not matching a existent one in database. Otherwise it will discard companies that don't match any on storage.",
+          "required": false,
+          "default": "false",
+          "paramType": "form",
+          "enum": ["true", "false"],
+          "type": "boolean"
+        }],
+        "responses": {
+          "200": {
+            "description": "Common response",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/companies": {
+      "get": {
+        "description": "Return the first company matching the `name` and `zip` parameter given",
+        "operationId": "GetCompany",
+        "parameters": [{
+            "name": "name",
+            "in": "query",
+            "description": "The company name (can be just a part of it)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "zip",
+            "in": "query",
+            "description": "The company zipcode",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company response",
+            "schema": {
+              "$ref": "#/definitions/CompanyResponse"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Merges a company into the database",
+        "operationId": "MergeCompany",
+        "responses": {
+          "description": "Common response",
+          "schema": {
+            "$ref": "#/definitions/Success"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "company",
+            "in": "body",
+            "description": "Company to merge to the database",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Company"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Company": {
+      "type": "object",
+      "required": [
+        "name",
+        "zip",
+        "website"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "Success": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "default": "OK"
+        },
+        "message": {
+          "type": "string",
+          "default": "Done!"
+        }
+      }
+    },
+    "CompanyResponse": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
