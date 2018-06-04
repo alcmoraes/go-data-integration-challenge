@@ -1,7 +1,7 @@
 # Data Integration Challenge
 
 [![Code Climate](https://codeclimate.com/github/alcmoraes/go-data-integration-challenge/badges/gpa.svg)](https://codeclimate.com/github/alcmoraes/go-data-integration-challenge)
-[![GoReport](https://goreportcard.com/badge/github.com/alcmoraes/go-data-integration-challenge)](https://goreportcard.com/report/github.com/aymone/api-unit-test)
+[![GoReport](https://goreportcard.com/badge/github.com/alcmoraes/go-data-integration-challenge)](https://goreportcard.com/report/github.com/alcmoraes/go-data-integration-challenge)
 [![Travis CI](https://api.travis-ci.org/alcmoraes/go-data-integration-challenge.svg?branch=master)](https://travis-ci.org/alcmoraes/go-data-integration-challenge)
 
 **Obs.: That's a technical challenge applied by @alcmoraes to Neoway**
