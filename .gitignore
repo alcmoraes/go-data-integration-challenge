@@ -2,3 +2,4 @@ vendor/*
 config.yml
 app/*
 !app/.gitkeep
+coverage.lcov

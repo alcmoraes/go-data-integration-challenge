@@ -1,7 +1,7 @@
 package router
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -9,13 +9,14 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alcmoraes/go-data-integration-challenge/types"
 	"github.com/alcmoraes/go-data-integration-challenge/utils"
 	"github.com/stretchr/testify/assert"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func TestCompanyApi(t *testing.T) {
+func TestCompanyAPI(t *testing.T) {
 
 	R := Load()
 
@@ -36,48 +37,71 @@ func TestCompanyApi(t *testing.T) {
 		assert.Equal(t, http.StatusNotFound, w.Code)
 	})
 
-	t.Run("Create a new company", func(t *testing.T) {
+	t.Run("Success when persisting a CSV in database", func(t *testing.T) {
+
+		values := map[string]io.Reader{
+			"file":    utils.MustOpen("../test/mock/q1_catalog.csv"),
+			"persist": strings.NewReader("true"),
+		}
 
 		w := httptest.NewRecorder()
 
-		body := []byte(`{"name": "Facetruck Corp", "zip": "12345", "persist": true}`)
+		b, m, err := utils.GenerateMultipartHeadersFromLocal(values)
 
-		req, err := http.NewRequest("POST", "/companies/", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", "/companies/upload", b)
 		assert.NoError(t, err)
+		req.Header.Set("Content-Type", m.FormDataContentType())
 		R.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-
-	})
-
-	t.Run("Returns a company when it finds one", func(t *testing.T) {
-		w := httptest.NewRecorder()
-		req, err := http.NewRequest("GET", fmt.Sprintf("/companies/?name=%s&zip=%d", "facetruck", 12345), nil)
 		assert.NoError(t, err)
-		R.ServeHTTP(w, req)
 		log.Print(w.Body)
 		assert.Equal(t, http.StatusOK, w.Code)
 	})
 
-	// It looks like goroutines do not get executed when unit testing (?)
-	t.Run("Success when uploading CSV", func(t *testing.T) {
+	t.Run("Returns a company when it finds one", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", fmt.Sprintf("/companies/?name=%s&zip=%d", "tola", 78229), nil)
+		assert.NoError(t, err)
+		R.ServeHTTP(w, req)
+		log.Print(w.Body)
+		assert.Equal(t, http.StatusOK, w.Code)
+		company := types.Company{}
+		err = json.Unmarshal(w.Body.Bytes(), &company)
+		assert.NoError(t, err)
+		assert.Equal(t, company.Name, "tola sales group")
+		assert.Empty(t, company.Website)
+	})
+
+	t.Run("Success when merging a CSV in database", func(t *testing.T) {
 
 		values := map[string]io.Reader{
-			"file":    utils.MustOpen("../test/mock/q2_clientData.csv"), // lets assume its this file
+			"file":    utils.MustOpen("../test/mock/q2_clientData.csv"),
 			"persist": strings.NewReader("false"),
 		}
 
 		w := httptest.NewRecorder()
 
-		h, m, err := utils.Upload("/companies/upload", values)
-		h.Header.Set("Content-Type", m.FormDataContentType())
+		b, m, err := utils.GenerateMultipartHeadersFromLocal(values)
 
-		R.ServeHTTP(w, h)
-
-		log.Print(w.Code)
-
+		req, err := http.NewRequest("POST", "/companies/upload", b)
 		assert.NoError(t, err)
+		req.Header.Set("Content-Type", m.FormDataContentType())
+		R.ServeHTTP(w, req)
+		assert.NoError(t, err)
+		log.Print(w.Body)
+		assert.Equal(t, http.StatusOK, w.Code)
+	})
 
+	t.Run("Returns a merged company when it finds one", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", fmt.Sprintf("/companies/?name=%s&zip=%d", "tola", 78229), nil)
+		assert.NoError(t, err)
+		R.ServeHTTP(w, req)
+		log.Print(w.Body)
+		assert.Equal(t, http.StatusOK, w.Code)
+		company := types.Company{}
+		err = json.Unmarshal(w.Body.Bytes(), &company)
+		assert.NoError(t, err)
+		assert.Equal(t, company.Website, "http://repsources.com")
 	})
 
 }
