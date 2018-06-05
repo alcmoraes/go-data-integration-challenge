@@ -41,12 +41,12 @@ In the other hand, typing `make` show the available commands in your terminal
 | start     | Starts the containers and the API listening on port `8080` |
 | stop      | Stops the containers |
 | check     | Run unit tests |
-| docs      | Serve the Swagger Explorer UI on port `3005` |
+| docs      | Serve the Swagger Explorer UI on port `3002` |
 | remove    | Removes containers and volumes created by docker |
 
 ## API Documentation (Swagger)
 
 Ensure the project is running (`make start`).
 
-Execute `make docs`, this will start a swagger explorer on port `3005`.
+Execute `make docs`, this will start a swagger explorer on port `3002`.
 
