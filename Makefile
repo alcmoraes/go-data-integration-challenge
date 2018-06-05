@@ -20,7 +20,7 @@ after_check:
 	- docker exec -it go_dic /bin/sh -c "CC_TEST_REPORTER_ID=$(CCT) ./cc-test-reporter after-build $(TRAVIS_TEST_RESULT)"
 
 docs: ## Serves a swagger server containing the specs for this api 
-	- docker exec -it go_dic /bin/sh -c "PORT=3002 swagger serve swagger.json"
+	- docker exec -it go_dic /bin/sh -c "PORT=3002 swagger serve --no-open swagger.json"
 
 setup: remove ## Builds the containers
 	- docker-compose build
