@@ -21,6 +21,13 @@
 It will build a mongo and go docker containers, where the go container `automatically starts listening` on port `8080`
 CSV's uploaded via API imported/merged into database right away.
 
+## The Goroutine issue
+
+For some reason, unit tests that executes goroutines are not working.
+Unfortunately I couldn't go further on debugging that issue.
+To meet the deadline, I've chosen to let those goroutines as synchronous.
+*I'm not proud of this decision*
+
 ## Usage
 
 The default usage for this project is:

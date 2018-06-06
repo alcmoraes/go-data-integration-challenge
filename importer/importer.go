@@ -38,6 +38,12 @@ func Worker(f multipart.File, persist bool, done chan bool) error {
 
 	for _, c := range companies {
 		company := *c
+		// @TODO
+		// When unit testing, for some reason
+		// goroutines seems to not work correctly.
+		// I'm probably missing something.
+		//
+		// go database.AddCompanyIntoDatabase(company, persist)
 		database.AddCompanyIntoDatabase(company, persist)
 	}
 
