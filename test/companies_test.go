@@ -1,4 +1,4 @@
-package router
+package test
 
 import (
 	"encoding/json"
@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/alcmoraes/go-data-integration-challenge/database"
+	"github.com/alcmoraes/go-data-integration-challenge/router"
 	"github.com/alcmoraes/go-data-integration-challenge/types"
 	"github.com/alcmoraes/go-data-integration-challenge/utils"
 	"github.com/stretchr/testify/assert"
@@ -37,7 +38,7 @@ func TestMain(m *testing.M) {
 
 func TestCompanyAPI(t *testing.T) {
 
-	R := Load()
+	R := router.Load()
 
 	t.Run("Will fail on getting companies without sending parameters", func(t *testing.T) {
 		w := httptest.NewRecorder()

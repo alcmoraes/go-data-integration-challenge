@@ -14,7 +14,7 @@ before_check:
 	- docker exec -it go_dic /bin/sh -c "CC_TEST_REPORTER_ID=$(CCT) ./cc-test-reporter before-build"
 
 check: ## Run unit tests
-	- docker exec -it go_dic /bin/sh -c "go test -coverprofile c.out ./..."
+	- docker exec -it go_dic /bin/sh -c "go test -coverprofile c.out -v ./..."
 
 after_check:
 	- docker exec -it go_dic /bin/sh -c "CC_TEST_REPORTER_ID=$(CCT) ./cc-test-reporter after-build $(TRAVIS_TEST_RESULT)"

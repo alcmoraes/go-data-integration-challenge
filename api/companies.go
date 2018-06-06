@@ -87,9 +87,13 @@ func UploadCompanies(c *gin.Context) {
 
 		doneImporting := make(chan bool, 1)
 
+		// @TODO
+		// When unit testing, for some reason
+		// goroutines seems to not work correctly.
+		// I'm probably missing something.
+		//
+		// go importer.Worker(file, body.Persist, doneImporting)
 		importer.Worker(file, body.Persist, doneImporting)
-
-		<-doneImporting
 
 		c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Done!"})
 
